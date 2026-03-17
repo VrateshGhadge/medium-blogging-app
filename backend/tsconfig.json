@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,

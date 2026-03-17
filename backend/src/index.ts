@@ -13,4 +13,4 @@ app.get('/api/v1/blog/:id', (c) => c.text('Hono!'))
 
 app.get('./api/v1/blog/bulk')
 
-export default app 
+export default app
