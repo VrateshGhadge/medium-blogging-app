@@ -1,6 +1,8 @@
 # prod
 dist/
 
+/src/generated
+
 # dev
 .yarn/
 !.yarn/releases
