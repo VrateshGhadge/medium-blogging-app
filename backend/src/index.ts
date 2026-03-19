@@ -1,7 +1,8 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { sign } from 'hono/jwt'
+import { sign, verify } from 'hono/jwt'
+
 
 const app = new Hono<{
   Bindings: {
@@ -9,6 +10,22 @@ const app = new Hono<{
     JWT_SECRET: string
   }
 }>()
+
+//middleware
+app.use('/api/v1/blog/*', async (c, next) => {
+  const authHeader = c.req.header("authorization") || ""
+  const response = await verify(authHeader, c.env.JWT_SECRET, "HS256")
+
+  if(response.id){
+    next()
+  } else {
+    c.status(403)
+    return c.json({
+      error: "unauthorized"
+    }) 
+  }
+  await next()
+})
 
 app.post('/api/v1/signup', async (c) => {
     const prisma = new PrismaClient({
@@ -44,6 +61,9 @@ app.post('/api/v1/signin', async(c) => {
   })
 
   if(!user){
+    // c.status(401);
+    // return c.json({error: '-----'})
+    //      OR
     return c.json({error: 'Invalid email or password'}, 401)
   }
 
@@ -51,12 +71,25 @@ app.post('/api/v1/signin', async(c) => {
   return c.json({jwt})
 })
 
-app.post('/api/v1/blog', (c) => c.text('Hono!'))
+app.post('/api/v1/blog', async(c) => {
 
-app.put('/api/v1/blog', (c) => c.text('Hono!'))
+  c.text('Hono!')
+})
 
-app.get('/api/v1/blog/:id', (c) => c.text('Hono!'))
+app.put('/api/v1/blog', (c) => {
 
-app.get('./api/v1/blog/bulk')
+  c.text('Hono!')
+})
+
+app.get('/api/v1/blog/:id', (c) => {
+
+  c.text('Hono!')
+})
+
+app.get('./api/v1/blog/bulk', (c) => {
+  
+  c.text('Hono!')
+})
+
 
 export default app
