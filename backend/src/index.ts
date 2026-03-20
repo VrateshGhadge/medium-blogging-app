@@ -27,6 +27,7 @@ app.use('/api/v1/blog/*', async (c, next) => {
   await next()
 })
 
+//zod validation and pass hashing-> salting etc
 app.post('/api/v1/signup', async (c) => {
     const prisma = new PrismaClient({
     accelerateUrl: c.env.DATABASE_URL, 
@@ -34,18 +35,25 @@ app.post('/api/v1/signup', async (c) => {
 
   const body = await c.req.json()
 
-  const user = await prisma.user.create({
-    data: {
-      email: body.email,
-      password: body.password,
-    },
-  })
+  try{
+    const user = await prisma.user.create({
+      data: {
+        email: body.email,
+        password: body.password,
+      },
+    })
 
-  const token = await sign({id: user.id}, c.env.JWT_SECRET)
-
-  return c.json({
-    jwt: token
-  })})
+    const token = await sign({id: user.id}, c.env.JWT_SECRET)
+    return c.json({
+      jwt: token
+    })
+  } catch(e){
+    c.status(403)
+    return c.json({
+      error: "User already exist with this email"
+    })
+  }
+})
 
 app.post('/api/v1/signin', async(c) => {
     const prisma = new PrismaClient({
