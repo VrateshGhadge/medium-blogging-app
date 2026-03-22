@@ -1,3 +1,5 @@
+import { PrismaClient } from '@prisma/client/edge'
+import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 
 export const blogRouter = new Hono<{
@@ -7,8 +9,17 @@ export const blogRouter = new Hono<{
     }
 }>()
 
+blogRouter.use('/*', (c, next) => {
+  next()
+})
+
 
 blogRouter.post('/', async(c) => {
+  const prisma = new PrismaClient({
+    accelerateUrl: c.env.DATABASE_URL, 
+  }).$extends(withAccelerate())
+
+  await prisma
 
   c.text('Hono!')
 })
