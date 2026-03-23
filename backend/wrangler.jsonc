@@ -7,10 +7,12 @@
   //   "nodejs_compat"
   // ],
   
-  "vars": {
-    "DATABASE_URL": "YOUR_DB_URL_HERE",
-    "JWT_SECRET": "YOUR_SECRET_HERE"
-  }
+  // "vars": {
+  //   "DATABASE_URL": "YOUR_DB_URL_HERE",
+  //   "JWT_SECRET": "YOUR_SECRET_HERE"
+  // }
+
+
 
 
 
