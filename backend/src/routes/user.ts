@@ -5,14 +5,14 @@ import { sign } from 'hono/jwt'
 
 export const userRouter = new Hono<{
     Bindings: {
-        DATABASE_URL: string,
+        ACCELERATE_URL: string,
         JWT_SECRET: string
     }
 }>()
 
 userRouter.post('/signup', async (c) => {
     const prisma = new PrismaClient({
-    accelerateUrl: c.env.DATABASE_URL, 
+    accelerateUrl: c.env.ACCELERATE_URL 
   }).$extends(withAccelerate())
 
   const body = await c.req.json()
@@ -44,21 +44,20 @@ userRouter.post('/signup', async (c) => {
   }
 })
 
-userRouter.post('/api/v1/signin', async(c) => {
+userRouter.post('/signin', async(c) => {
     const prisma = new PrismaClient({
-    accelerateUrl: c.env.DATABASE_URL, 
+    accelerateUrl: c.env.ACCELERATE_URL 
   }).$extends(withAccelerate())
 
   const body = await c.req.json()
   try{
     const user = await prisma.user.findUnique({
       where: {
-        email: body.email,
-        password: body.password
+        email: body.email
       },
     })
 
-    if(!user){
+    if(!user || user.password !== body.password ){
       // c.status(401);
       // return c.json({error: '-----'})
       //      OR
