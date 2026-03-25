@@ -10,10 +10,12 @@
     "@prisma/client": "^7.5.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "hono": "^4.12.7",
-    "prisma": "^7.5.0"
+    "medium-validn-common": "^1.0.1",
+    "prisma": "^7.5.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "miniflare": "^4.20260312.0",
-    "wrangler": "^3.114.17"
+    "wrangler": "^4.77.0"
   }
 }
