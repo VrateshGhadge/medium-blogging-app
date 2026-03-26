@@ -10,7 +10,7 @@
     "@prisma/client": "^7.5.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "hono": "^4.12.7",
-    "medium-validn-common": "^1.0.1",
+    "medium-validn-common": "^1.0.3",
     "prisma": "^7.5.0",
     "zod": "^4.3.6"
   },
