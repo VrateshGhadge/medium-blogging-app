@@ -1,5 +1,4 @@
 import { Hono } from 'hono'
-import { sign, verify } from 'hono/jwt'
 import { userRouter } from './routes/user'
 import { blogRouter } from './routes/blog'
 
