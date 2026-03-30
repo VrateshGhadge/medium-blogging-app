@@ -4,7 +4,6 @@ import { SignupInput } from "medium-validn-common"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 
-
 export const Auth = ({ type } : {type: "signin" | "signup"})=>{
     const navigate = useNavigate()
     const [postInputs, setPostInputs] = useState<SignupInput>({

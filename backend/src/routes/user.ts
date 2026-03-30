@@ -6,14 +6,14 @@ import { signupInput, signinInput } from 'medium-validn-common'
 
 export const userRouter = new Hono<{
     Bindings: {
-        ACCELERATE_URL: string,
+        DATABASE_URL: string,
         JWT_SECRET: string
     }
 }>()
 
 userRouter.post('/signup', async (c) => {
     const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL 
+    accelerateUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
 
   const body = await c.req.json() 
@@ -55,7 +55,7 @@ userRouter.post('/signup', async (c) => {
 
 userRouter.post('/signin', async(c) => {
     const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL 
+    accelerateUrl: c.env.DATABASE_URL, 
   }).$extends(withAccelerate())
 
   const body = await c.req.json()
