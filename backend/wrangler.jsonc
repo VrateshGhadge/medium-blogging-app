@@ -12,9 +12,6 @@
     "JWT_SECRET": "YOUR_SECRET_HERE"
   }
 
-
-
-
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
