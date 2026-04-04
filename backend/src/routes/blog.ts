@@ -6,7 +6,7 @@ import { createBlogInput, updateBlogInput } from 'medium-validn-common';
 
 export const blogRouter = new Hono<{
     Bindings: {
-        ACCELERATE_URL: string,
+        DATABASE_URL: string,
         JWT_SECRET: string
     },
     Variables:{
@@ -47,7 +47,7 @@ blogRouter.post('/', async(c) => {
     })
   }
   const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL, 
+    accelerateUrl: c.env.DATABASE_URL, 
   }).$extends(withAccelerate())
 
   const authorId = c.get("userId")
@@ -75,7 +75,7 @@ blogRouter.put('/', async (c) => {
     })
   }
   const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL, 
+    accelerateUrl: c.env.DATABASE_URL, 
   }).$extends(withAccelerate())
 
   const blog = await prisma.post.update({
@@ -96,10 +96,21 @@ blogRouter.put('/', async (c) => {
 //add pagination
 blogRouter.get('/bulk', async(c) => {
     const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL, 
+    accelerateUrl: c.env.DATABASE_URL, 
   }).$extends(withAccelerate())
 
-  const blogs = await prisma.post.findMany();
+  const blogs = await prisma.post.findMany({
+    select: {
+      content: true,
+      title: true,
+      id: true,
+      author:{
+        select: {
+          name: true
+        }
+      }
+    }
+  });
   
   return c.json({
     blogs
@@ -110,7 +121,7 @@ blogRouter.get('/bulk', async(c) => {
 blogRouter.get('/:id', async (c) => {
   const id = c.req.param("id")
   const prisma = new PrismaClient({
-    accelerateUrl: c.env.ACCELERATE_URL, 
+    accelerateUrl: c.env.DATABASE_URL, 
   }).$extends(withAccelerate())
 
 
@@ -118,6 +129,16 @@ blogRouter.get('/:id', async (c) => {
     const blog = await prisma.post.findFirst({
       where:{
         id
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: {
+          select:{
+            name: true
+          }
+        }
       }
     })
     return c.json({

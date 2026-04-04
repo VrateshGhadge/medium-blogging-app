@@ -1,17 +1,21 @@
 
+import { Link } from "react-router-dom"
+
 interface BlogCardProps {
     authorName: string
     title: string
     content: string
     publishedDate: string
+    id: string
 }
 export const BlogCard = ({
     authorName,
     title,
     content,
-    publishedDate
+    publishedDate,
+    id
 }: BlogCardProps)=>{
-    return <div className="p-4 border-b border-slate-200 pb-4">
+    return<Link to={`/blog/${id}`}> <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-3xl cursor-pointer">
         <div className="flex">
             <Avatar name={authorName} />
             <div className="font-extralight pl-2 text-sm flex justify-center flex-col">{authorName}</div>
@@ -32,6 +36,7 @@ export const BlogCard = ({
                 {`${Math.ceil(content.length / 100)} min read`}
             </div>
     </div>
+    </Link>
 }
 
 function Circle(){
@@ -40,9 +45,9 @@ function Circle(){
     </div>
 }
 
-function Avatar ({ name }: { name: string }){
-    return <div className="relative inline-flex items-center justify-center w-6 h-6 overflow-hidden bg-gray-100 bg-neutral-tertiary rounded-full dark:bg-gray-600">
-    <span className="text-xs font-extralight text-gray-600 dark:text-gray-300">{name[0]}</span>
+export function Avatar ({ name, size = "small" }: { name: string, size?: "small" | "big" }){
+    return <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-100 bg-neutral-tertiary rounded-full dark:bg-gray-600 ${size === "small" ? "w-6 h-6" : "w-10 h-10"}`}>
+    <span className={`${size === "small" ? "text-xs" : "text-md"}text-xs font-extralight text-gray-600 dark:text-gray-300`}>{name[0]}</span>
 </div>
 
 }
